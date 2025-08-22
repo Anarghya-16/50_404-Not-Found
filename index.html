@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarZoo</title>
+    <meta name="description" content="Customize and visualize your dream car in stunning 3D with real-time changes, AR/VR support, and photorealistic rendering">
+    <meta name="keywords" content="3D car customization, vehicle visualization, AR VR cars, car configurator, automotive design">
+    <meta property="og:title" content="CarVision 3D - Real-time Car Customization Platform">
+    <meta property="og:description" content="Customize and visualize your dream car in stunning 3D with real-time changes">
+    <meta name="twitter:title" content="CarVision 3D - Real-time Car Customization Platform">
+    <meta name="twitter:description" content="Customize and visualize your dream car in stunning 3D with real-time changes">
+
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react@18/umd/react.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://resource.trickle.so/vendor_lib/unpkg/lucide-static@0.516.0/font/lucide.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/RGBELoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+
+    <style type="text/tailwindcss">
+    @layer theme {
+        :root {
+            --primary-color: #2563eb; /* Deep blue */
+            --secondary-color: #18181b; /* Dark background */
+            --accent-color: #f59e42; /* Warm orange accent */
+            --highlight-color: #fbbf24; /* Bright yellow highlight */
+            --text-primary: #f3f4f6; /* Light text for dark mode */
+            --text-secondary: #a1a1aa; /* Muted gray */
+            --surface: #18181b; /* Main dark surface */
+            --surface-light: #27272a; /* Slightly lighter dark */
+            --border: #334155; /* Muted blue-gray border */
+            --shadow: 0 8px 24px -4px rgb(0 0 0 / 0.4);
+        }
+    }
+
+    @layer base {
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #18181b 0%, #27272a 60%, #2563eb 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+        
+        .glass-effect {
+            background: rgba(24, 24, 27, 0.7);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border);
+        }
+    }
+
+    @layer components {
+        .btn-primary {
+            padding: 1rem 1.5rem;
+            background: linear-gradient(90deg, var(--primary-color) 60%, var(--accent-color) 100%);
+            color: var(--text-primary);
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 12px 0 var(--primary-color);
+            transition: background 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(90deg, var(--accent-color) 0%, var(--primary-color) 100%);
+            box-shadow: 0 4px 24px 0 var(--accent-color);
+        }
+        .btn-secondary {
+            padding: 1rem 1.5rem;
+            background-color: var(--surface-light);
+            color: var(--text-primary);
+            border-radius: 0.5rem;
+            border: 1px solid var(--border);
+            transition: background 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-secondary:hover {
+            background-color: var(--primary-color);
+            color: var(--text-primary);
+        }
+        .card {
+            background: linear-gradient(135deg, var(--surface) 60%, var(--surface-light) 100%);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+        .color-swatch {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 9999px;
+            cursor: pointer;
+            border: 2px solid var(--highlight-color);
+            box-shadow: 0 4px 16px -1px var(--highlight-color);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .color-swatch:hover {
+            transform: scale(1.1);
+            border-color: var(--primary-color);
+        }
+    }
+
+    @layer utilities {
+        .text-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel" src="components/Header.js"></script>
+    <script type="text/babel" src="components/Car3DViewer.js"></script>
+    <script type="text/babel" src="components/CustomizationPanel.js"></script>
+    <script type="text/babel" src="components/ColorSelector.js"></script>
+    <script type="text/babel" src="components/MaterialSelector.js"></script>
+    <script type="text/babel" src="components/ARVRControls.js"></script>
+    <script type="text/babel" src="utils/carModels.js"></script>
+    <script type="text/babel" src="utils/renderEngine.js"></script>
+    <script type="text/babel" src="app.js"></script>
+</body>
+</html>
