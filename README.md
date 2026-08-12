@@ -67,6 +67,3 @@ Because the 3D models are loaded via `fetch`/`GLTFLoader`, you'll need to serve 
 
 Contributions, issues, and feature requests are welcome. Feel free to open a pull request or file an issue.
 
-## License
-
-Add a license of your choice (e.g. MIT) here.
